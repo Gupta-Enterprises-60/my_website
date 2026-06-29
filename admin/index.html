@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — Gupta Enterprises</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<!-- ── LOGIN SCREEN ─────────────────────────────────── -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <svg width="36" height="36" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="2" y="2" width="12" height="12" fill="#E8621A"/>
+        <rect x="18" y="2" width="12" height="12" fill="#C8D4E0" opacity=".4"/>
+        <rect x="2" y="18" width="12" height="12" fill="#C8D4E0" opacity=".4"/>
+        <rect x="18" y="18" width="12" height="12" fill="#E8621A" opacity=".6"/>
+      </svg>
+      <span class="login-brand">GUPTA <span>ENTERPRISES</span></span>
+    </div>
+    <h1>Admin panel</h1>
+    <p>Sign in to manage your website content.</p>
+    <div class="login-err" id="login-err">Incorrect password. Please try again.</div>
+    <div class="field">
+      <label for="admin-pw">Password</label>
+      <input type="password" id="admin-pw" placeholder="Enter your admin password"
+             onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn-primary" onclick="doLogin()">Sign in</button>
+    <a href="../index.html" class="back-link">← Back to website</a>
+  </div>
+</div>
+
+<!-- ── ADMIN PANEL ───────────────────────────────────── -->
+<div id="admin-panel" style="display:none">
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="2" y="2" width="12" height="12" fill="#E8621A"/>
+        <rect x="18" y="2" width="12" height="12" fill="#C8D4E0" opacity=".3"/>
+        <rect x="2" y="18" width="12" height="12" fill="#C8D4E0" opacity=".3"/>
+        <rect x="18" y="18" width="12" height="12" fill="#E8621A" opacity=".6"/>
+      </svg>
+      <span>GE Admin</span>
+    </div>
+    <nav class="sb-nav">
+      <a href="#" class="sb-link active" data-tab="dashboard" onclick="showTab('dashboard',this)">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="6" height="6" rx="1" fill="currentColor" opacity=".5"/><rect x="9" y="1" width="6" height="6" rx="1" fill="currentColor"/><rect x="1" y="9" width="6" height="6" rx="1" fill="currentColor"/><rect x="9" y="9" width="6" height="6" rx="1" fill="currentColor" opacity=".5"/></svg>
+        Dashboard
+      </a>
+      <a href="#" class="sb-link" data-tab="products" onclick="showTab('products',this)">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="14" height="4" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="1" y="7" width="14" height="4" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="1" y="13" width="8" height="2" rx="1" fill="currentColor"/></svg>
+        Products
+      </a>
+      <a href="#" class="sb-link" data-tab="add" onclick="showTab('add',this)">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v6M5 8h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Add product
+      </a>
+      <a href="#" class="sb-link" data-tab="settings" onclick="showTab('settings',this)">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M2.93 2.93l1.41 1.41M11.66 11.66l1.41 1.41M2.93 13.07l1.41-1.41M11.66 4.34l1.41-1.41" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Settings
+      </a>
+    </nav>
+    <div class="sb-footer">
+      <a href="../index.html" class="sb-link">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 8H14M11 5l3 3-3 3M6 3H2a1 1 0 00-1 1v8a1 1 0 001 1h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        View website
+      </a>
+      <button class="sb-link logout-btn" onclick="doLogout()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 8H2M5 5l-3 3 3 3M10 3h4a1 1 0 011 1v8a1 1 0 01-1 1h-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Sign out
+      </button>
+    </div>
+  </aside>
+
+  <main class="main-area">
+
+    <!-- DASHBOARD TAB -->
+    <div class="tab-content active" id="tab-dashboard">
+      <div class="page-header">
+        <div>
+          <h2>Dashboard</h2>
+          <p>Welcome back. Here's an overview of your catalog.</p>
+        </div>
+      </div>
+      <div class="stat-cards">
+        <div class="stat-card">
+          <div class="sc-label">Total products</div>
+          <div class="sc-num" id="dash-total">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-label">Available</div>
+          <div class="sc-num green" id="dash-avail">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-label">Custom order</div>
+          <div class="sc-num orange" id="dash-custom">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-label">Categories</div>
+          <div class="sc-num" id="dash-cats">0</div>
+        </div>
+      </div>
+      <div class="dash-recent">
+        <h3>Recent products</h3>
+        <div id="dash-list"></div>
+      </div>
+    </div>
+
+    <!-- PRODUCTS TAB -->
+    <div class="tab-content" id="tab-products">
+      <div class="page-header">
+        <div>
+          <h2>All products</h2>
+          <p>Click edit to modify or delete to remove a product.</p>
+        </div>
+        <button class="btn-primary" onclick="showTab('add',document.querySelector('[data-tab=add]'))">+ Add product</button>
+      </div>
+      <div class="toast" id="del-toast">Product deleted.</div>
+      <div id="product-table"></div>
+    </div>
+
+    <!-- ADD/EDIT TAB -->
+    <div class="tab-content" id="tab-add">
+      <div class="page-header">
+        <div>
+          <h2 id="form-title">Add new product</h2>
+          <p>Fill in the details and save. The product appears on your website immediately.</p>
+        </div>
+      </div>
+      <div class="toast" id="save-toast">Product saved successfully!</div>
+      <div class="form-card">
+        <input type="hidden" id="edit-id">
+        <div class="form-2col">
+          <div class="field">
+            <label for="f-name">Product name <span class="req">*</span></label>
+            <input type="text" id="f-name" placeholder="e.g. Heavy-Duty Shelving Rack">
+          </div>
+          <div class="field">
+            <label for="f-cat">Category <span class="req">*</span></label>
+            <select id="f-cat">
+              <option value="">Select category</option>
+              <option>Shelving Racks</option>
+              <option>Cable Racks</option>
+              <option>Server Racks</option>
+              <option>Automobile Parts</option>
+              <option>Custom Fabrication</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-desc">Description <span class="req">*</span></label>
+          <textarea id="f-desc" rows="4" placeholder="Describe the product — material, dimensions, specifications, use case..."></textarea>
+        </div>
+        <div class="form-2col">
+          <div class="field">
+            <label for="f-icon">Icon (emoji)</label>
+            <input type="text" id="f-icon" placeholder="🗄️" maxlength="4" style="font-size:22px">
+            <div class="field-hint">Paste any emoji — it displays on the product card.</div>
+          </div>
+          <div class="field">
+            <label for="f-filter">Filter category</label>
+            <select id="f-filter">
+              <option value="rack">Rack Systems</option>
+              <option value="auto">Automobile</option>
+              <option value="custom">Custom</option>
+            </select>
+            <div class="field-hint">Controls which filter button shows this product.</div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-status">Availability status</label>
+          <div class="status-group">
+            <label class="status-opt">
+              <input type="radio" name="status" value="Available" checked> Available
+            </label>
+            <label class="status-opt">
+              <input type="radio" name="status" value="Custom order"> Custom order
+            </label>
+            <label class="status-opt">
+              <input type="radio" name="status" value="Out of stock"> Out of stock
+            </label>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-primary" onclick="saveProduct()">Save product</button>
+          <button class="btn-cancel" id="cancel-btn" onclick="cancelEdit()" style="display:none">Cancel edit</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS TAB -->
+    <div class="tab-content" id="tab-settings">
+      <div class="page-header">
+        <div>
+          <h2>Site settings</h2>
+          <p>Update your contact details and admin password.</p>
+        </div>
+      </div>
+      <div class="toast" id="settings-toast">Settings saved!</div>
+      <div class="form-card">
+        <h3 class="form-section-title">Contact information</h3>
+        <div class="form-2col">
+          <div class="field">
+            <label for="s-phone">Phone number</label>
+            <input type="text" id="s-phone" placeholder="+91 XXXXX XXXXX">
+          </div>
+          <div class="field">
+            <label for="s-email">Email address</label>
+            <input type="email" id="s-email" placeholder="info@guptaenterprises.in">
+          </div>
+        </div>
+        <div class="field">
+          <label for="s-address">Address</label>
+          <input type="text" id="s-address" placeholder="Faridabad, Haryana, India">
+        </div>
+        <div class="divider"></div>
+        <h3 class="form-section-title">Security</h3>
+        <div class="form-2col">
+          <div class="field">
+            <label for="s-pass">New admin password</label>
+            <input type="password" id="s-pass" placeholder="Leave blank to keep current">
+          </div>
+          <div class="field">
+            <label for="s-pass2">Confirm new password</label>
+            <input type="password" id="s-pass2" placeholder="Repeat new password">
+          </div>
+        </div>
+        <div class="field-hint" style="margin-bottom:20px">Default password is <code>admin123</code>. Change it before sharing the admin link.</div>
+        <button class="btn-primary" onclick="saveSettings()">Save settings</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ─── DATA HELPERS ─────────────────────────────────────────────────────────────
+const DEFAULT_PRODUCTS = [
+  {id:1,name:"Heavy-Duty Shelving Rack",cat:"Shelving Racks",filter:"rack",desc:"MS angle iron construction, powder-coated finish. Adjustable shelf heights, load capacity up to 500 kg per shelf.",icon:"🗄️",status:"Available"},
+  {id:2,name:"Slotted Angle Shelving",cat:"Shelving Racks",filter:"rack",desc:"Versatile slotted angle rack system. Easy assembly and reconfiguration. Ideal for warehouses, workshops and storage areas.",icon:"📦",status:"Available"},
+  {id:3,name:"Cable Management Tray",cat:"Cable Racks",filter:"rack",desc:"Perforated tray design for neat cable routing in data centres and electrical installations. GI / MS construction.",icon:"🔌",status:"Available"},
+  {id:4,name:"Cable Ladder Rack",cat:"Cable Racks",filter:"rack",desc:"Heavy-duty ladder-type cable support system for large cable bundles. Hot-dip galvanised finish for corrosion resistance.",icon:"🪜",status:"Available"},
+  {id:5,name:"19\" Server Rack Enclosure",cat:"Server Racks",filter:"rack",desc:"EIA standard 19-inch, 42U closed rack with lockable front/rear doors, vented side panels, cable management.",icon:"🖥️",status:"Custom order"},
+  {id:6,name:"Open Frame Server Rack",cat:"Server Racks",filter:"rack",desc:"2-post and 4-post open frame racks in 12U to 42U. Easy access for high-density installations.",icon:"🏗️",status:"Custom order"},
+  {id:7,name:"Auto Body Bracket",cat:"Automobile Parts",filter:"auto",desc:"Precision-stamped structural brackets for automotive body assemblies. OEM-grade tolerances.",icon:"🚗",status:"Available"},
+  {id:8,name:"Chassis Sub-Frame Panel",cat:"Automobile Parts",filter:"auto",desc:"High-strength stamped panels for vehicle chassis and sub-frame applications. Custom profiles available.",icon:"⚙️",status:"Available"},
+  {id:9,name:"Engine Mounting Bracket",cat:"Automobile Parts",filter:"auto",desc:"Vibration-isolating engine mount brackets. CNC-machined for precise hole placement and fitment.",icon:"🔩",status:"Available"},
+  {id:10,name:"Custom Sheet Metal Part",cat:"Custom Fabrication",filter:"custom",desc:"Send us your drawing, sample, or describe your requirement. Fabricated via CNC, VMC, Laser, or Press.",icon:"📐",status:"Custom order"},
+  {id:11,name:"Laser-Cut Profile",cat:"Custom Fabrication",filter:"custom",desc:"Precise laser cutting from DXF / DWG files. Materials: MS, SS, Aluminium up to 12mm thickness.",icon:"⚡",status:"Custom order"},
+  {id:12,name:"Wall-Mount Equipment Rack",cat:"Server Racks",filter:"rack",desc:"Space-saving wall-mounted enclosures for networking equipment. 6U, 9U, 12U options.",icon:"📡",status:"Available"}
+];
+
+function getProducts() {
+  try { const d = localStorage.getItem("ge_products_v2"); return d ? JSON.parse(d) : [...DEFAULT_PRODUCTS]; }
+  catch(e) { return [...DEFAULT_PRODUCTS]; }
+}
+function setProducts(p) { try { localStorage.setItem("ge_products_v2", JSON.stringify(p)); } catch(e){} }
+function getSettings() {
+  try { const d = localStorage.getItem("ge_settings_v2"); return d ? JSON.parse(d) : {phone:"",email:"",address:"",pass:"admin123"}; }
+  catch(e) { return {phone:"",email:"",address:"",pass:"admin123"}; }
+}
+function setSettings(s) { try { localStorage.setItem("ge_settings_v2", JSON.stringify(s)); } catch(e){} }
+
+// ─── LOGIN ────────────────────────────────────────────────────────────────────
+function doLogin() {
+  const pw = document.getElementById("admin-pw").value;
+  const s  = getSettings();
+  if (pw === s.pass) {
+    document.getElementById("login-screen").style.display = "none";
+    document.getElementById("admin-panel").style.display  = "flex";
+    refreshDashboard();
+    renderTable();
+    loadSettings();
+  } else {
+    document.getElementById("login-err").style.display = "block";
+  }
+}
+function doLogout() {
+  document.getElementById("login-screen").style.display = "flex";
+  document.getElementById("admin-panel").style.display  = "none";
+  document.getElementById("admin-pw").value = "";
+}
+document.getElementById("admin-pw").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") doLogin();
+});
+
+// ─── TABS ─────────────────────────────────────────────────────────────────────
+function showTab(name, el) {
+  document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("active"));
+  document.querySelectorAll(".sb-link").forEach(l => l.classList.remove("active"));
+  document.getElementById("tab-" + name).classList.add("active");
+  if (el) el.classList.add("active");
+  if (name === "dashboard") refreshDashboard();
+  if (name === "products")  renderTable();
+  return false;
+}
+
+// ─── DASHBOARD ───────────────────────────────────────────────────────────────
+function refreshDashboard() {
+  const p = getProducts();
+  document.getElementById("dash-total").textContent  = p.length;
+  document.getElementById("dash-avail").textContent  = p.filter(x => x.status === "Available").length;
+  document.getElementById("dash-custom").textContent = p.filter(x => x.status === "Custom order").length;
+  const cats = new Set(p.map(x => x.cat));
+  document.getElementById("dash-cats").textContent   = cats.size;
+  const list = document.getElementById("dash-list");
+  list.innerHTML = p.slice(-5).reverse().map(x => `
+    <div class="dash-row">
+      <span class="dash-icon">${x.icon}</span>
+      <div class="dash-info"><strong>${x.name}</strong><span>${x.cat}</span></div>
+      <span class="status-pill ${x.status==='Available'?'green':x.status==='Custom order'?'orange':'gray'}">${x.status}</span>
+    </div>
+  `).join("");
+}
+
+// ─── PRODUCT TABLE ────────────────────────────────────────────────────────────
+function renderTable() {
+  const p = getProducts();
+  const el = document.getElementById("product-table");
+  if (!p.length) { el.innerHTML = '<p class="empty-msg">No products yet. Add your first product →</p>'; return; }
+  el.innerHTML = `
+    <table>
+      <thead><tr><th></th><th>Name</th><th>Category</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        ${p.map(x => `
+          <tr>
+            <td class="icon-cell">${x.icon}</td>
+            <td class="name-cell">${x.name}</td>
+            <td><span class="cat-pill">${x.cat}</span></td>
+            <td><span class="status-pill ${x.status==='Available'?'green':x.status==='Custom order'?'orange':'gray'}">${x.status}</span></td>
+            <td class="action-cell">
+              <button class="btn-edit" onclick="editProduct(${x.id})">Edit</button>
+              <button class="btn-del"  onclick="deleteProduct(${x.id})">Delete</button>
+            </td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+  `;
+}
+
+// ─── SAVE PRODUCT ─────────────────────────────────────────────────────────────
+function saveProduct() {
+  const name = document.getElementById("f-name").value.trim();
+  const cat  = document.getElementById("f-cat").value;
+  const desc = document.getElementById("f-desc").value.trim();
+  if (!name || !cat || !desc) { alert("Please fill in the product name, category, and description."); return; }
+
+  const status = document.querySelector("input[name='status']:checked").value;
+  const editId = document.getElementById("edit-id").value;
+  const prod = {
+    id:     editId ? parseInt(editId) : Date.now(),
+    name,
+    cat,
+    filter: document.getElementById("f-filter").value,
+    desc,
+    icon:   document.getElementById("f-icon").value.trim() || "⚙️",
+    status
+  };
+
+  let all = getProducts();
+  if (editId) {
+    const idx = all.findIndex(x => x.id === prod.id);
+    if (idx > -1) all[idx] = prod; else all.push(prod);
+  } else {
+    all.push(prod);
+  }
+  setProducts(all);
+  resetForm();
+  showToast("save-toast");
+}
+
+function resetForm() {
+  ["f-name","f-desc","f-icon","edit-id"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("f-cat").selectedIndex = 0;
+  document.getElementById("f-filter").selectedIndex = 0;
+  document.querySelector("input[name='status'][value='Available']").checked = true;
+  document.getElementById("form-title").textContent = "Add new product";
+  document.getElementById("cancel-btn").style.display = "none";
+}
+
+function cancelEdit() { resetForm(); }
+
+function editProduct(id) {
+  const p = getProducts().find(x => x.id === id);
+  if (!p) return;
+  showTab("add", document.querySelector("[data-tab='add']"));
+  document.getElementById("edit-id").value   = p.id;
+  document.getElementById("f-name").value    = p.name;
+  document.getElementById("f-cat").value     = p.cat;
+  document.getElementById("f-desc").value    = p.desc;
+  document.getElementById("f-icon").value    = p.icon || "";
+  document.getElementById("f-filter").value  = p.filter || "rack";
+  const radio = document.querySelector(`input[name='status'][value='${p.status}']`);
+  if (radio) radio.checked = true;
+  document.getElementById("form-title").textContent = "Edit product";
+  document.getElementById("cancel-btn").style.display = "inline-block";
+  window.scrollTo(0,0);
+}
+
+function deleteProduct(id) {
+  if (!confirm("Delete this product? This cannot be undone.")) return;
+  let all = getProducts().filter(x => x.id !== id);
+  setProducts(all);
+  renderTable();
+  refreshDashboard();
+  showToast("del-toast");
+}
+
+// ─── SETTINGS ─────────────────────────────────────────────────────────────────
+function loadSettings() {
+  const s = getSettings();
+  document.getElementById("s-phone").value   = s.phone   || "";
+  document.getElementById("s-email").value   = s.email   || "";
+  document.getElementById("s-address").value = s.address || "";
+}
+
+function saveSettings() {
+  const s = getSettings();
+  const np = document.getElementById("s-pass").value.trim();
+  const np2= document.getElementById("s-pass2").value.trim();
+  if (np && np !== np2) { alert("Passwords do not match."); return; }
+  const ns = {
+    phone:   document.getElementById("s-phone").value.trim()   || s.phone,
+    email:   document.getElementById("s-email").value.trim()   || s.email,
+    address: document.getElementById("s-address").value.trim() || s.address,
+    pass:    np || s.pass
+  };
+  setSettings(ns);
+  document.getElementById("s-pass").value  = "";
+  document.getElementById("s-pass2").value = "";
+  showToast("settings-toast");
+}
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+function showToast(id) {
+  const el = document.getElementById(id);
+  el.classList.add("show");
+  setTimeout(() => el.classList.remove("show"), 3000);
+}
+</script>
+</body>
+</html>
